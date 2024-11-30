@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "quasar-authentication"
+version = "0.1.0"
+description = ""
+authors = ["Giuseppe Di Bona <giusedb@gmail.com>"]
+readme = "README.md"
+packages = [{include = "quasar_authentication"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+sqlalchemy = "^2.0.36"
+bcrypt = "^4.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
