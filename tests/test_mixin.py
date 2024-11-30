@@ -1,3 +1,8 @@
+# pylint: disable=invalid-name
+# pylint: disable=missing-class-docstring
+# pylint: disable=too-few-public-methods
+
+
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.util import hybridproperty
@@ -6,7 +11,7 @@ from quasar_authentication.mixins import IdentityMixin
 
 
 def test_extention(Base, session):
-    from quasar_authentication.mixins import IdentityMixin
+    """Test the extensibility of User class"""
 
     class User(IdentityMixin, Base):
         __tablename__ = 'user'
@@ -26,11 +31,12 @@ def test_extention(Base, session):
     assert fetch_user.first_name == 'John', 'Missing name'
     assert fetch_user.last_name == 'Doe', 'Missing last name'
 
-    assert fetch_user.check_password('foo') == True, 'Password incorrect'
-    assert fetch_user.check_password('bar') == False, 'Anyone can login with the wrong password'
+    assert fetch_user.check_password('foo') is True, 'Password incorrect'
+    assert fetch_user.check_password('bar') is False, 'Anyone can login with the wrong password'
 
 
 def test_login(user, session):
+    """Test the login capability."""
     identity = user.login(session, 'john doe', 'foo')
     assert identity is not None, 'Login failed'
 
@@ -41,15 +47,15 @@ def test_login(user, session):
     assert user.login(session, 'john do', 'foo') is None, 'login with wrong username'
 
 
-
-
-def test_register(Base, session):
+def test_rename(Base, session):
+    """Test the rename of the `unid` column."""
     class User(IdentityMixin, Base):
         __tablename__ = 'user'
         email = Column(String)
 
+
         @hybridproperty
-        def username(self):
+        def username(self):  # pylint: disable=missing-function-docstring
             return self.unid
 
         def __init__(self, **kwargs):
@@ -71,12 +77,14 @@ def test_register(Base, session):
     assert l_user.username == 'foo', 'Login failed'
 
 def test_mutation(Base, session):
+    """Test the mutation of the `IdentityMixin` class."""
     class User(IdentityMixin, Base):
         __tablename__ = 'user'
         email = Column(String)
 
+
         @hybridproperty
-        def username(self):
+        def username(self):  # pylint: disable=missing-function-docstring
             return self.unid
 
         def __init__(self, **kwargs):
@@ -101,6 +109,7 @@ def test_mutation(Base, session):
     assert repr(l_user) == "User('foo', 'foo@bar.com')"
 
 def test_foreign_keys(Base, user, session):
+    """Test relations among parents and children objects."""
 
     class Child(Base):
         __tablename__ = 'child'

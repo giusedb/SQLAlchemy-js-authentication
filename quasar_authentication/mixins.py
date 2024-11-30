@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, Session
 import bcrypt
 
 class IdentityMixin:
+    """Define the basic Identification information model."""
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     unid: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
@@ -28,4 +29,4 @@ class IdentityMixin:
         identity = session.query(cls).filter_by(unid=unid).first()
         if identity and identity.check_password(password):
             return identity
-
+        return None
