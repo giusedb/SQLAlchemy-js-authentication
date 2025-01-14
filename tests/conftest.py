@@ -8,7 +8,6 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 
-
 @fixture()
 def db_engine():
     """Create a test SQLAlchemy database engine."""
