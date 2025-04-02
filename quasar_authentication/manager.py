@@ -1,3 +1,4 @@
+import time
 from types import FunctionType
 
 import bcrypt
@@ -13,16 +14,16 @@ class AuthenticationManager:
         self.session_maker = session_maker
         self.salt = salt.encode('ascii')
 
-    async def login(self, username, password) -> UserMixin:
+    async def login(self, username, password) -> dict | None:
         query = (select(self.user_model)
                  .where(self.user_model.username == username))
         async with self.session_maker() as session:
             result = await session.execute(query)
             user = result.scalar_one_or_none()
             if not user:
-                return False
+                return None
             if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('ascii')):
-                return False
+                return None
             return user
 
     async def register(self, user: UserMixin) -> UserMixin:
@@ -31,3 +32,11 @@ class AuthenticationManager:
             session.add(user)
             await session.commit()
             return user
+
+    async def user_exists(self, username: str) -> bool:
+        query = (select(self.user_model).where(self.user_model.username == username))
+        async with self.session_maker() as session:
+            user = (await session.execute(query)).scalar_one_or_none()
+            if user:
+                return True
+            return False
