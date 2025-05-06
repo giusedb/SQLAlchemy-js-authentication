@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "quasar-authentication"
+name = "sqlalchemy-js-authentication"
 version = "0.1.0"
 description = ""
 authors = ["Giuseppe Di Bona <giusedb@gmail.com>"]
 readme = "README.md"
-packages = [{include = "quasar_authentication"}]
+packages = [{include = "sqlalchemy_js_authentication"}]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.11"
 sqlalchemy = "^2.0.36"
 bcrypt = "^4.2.1"
 

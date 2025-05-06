@@ -7,7 +7,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.util import hybridproperty
 
-from quasar_authentication.mixins import IdentityMixin
+from jsalchemy_authentication.mixins import IdentityMixin
 
 
 def test_extention(Base, session):

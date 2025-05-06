@@ -33,7 +33,7 @@ def Base():
 @fixture()
 def user(Base, session):
     """Create the basic user model."""
-    from quasar_authentication.mixins import IdentityMixin
+    from jsalchemy_authentication.mixins import IdentityMixin
 
     class User(IdentityMixin, Base):
         """Redefined User class."""

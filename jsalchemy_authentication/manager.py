@@ -4,7 +4,7 @@ from types import FunctionType
 import bcrypt
 from sqlalchemy import false, select
 
-from quasar_authorization.models import UserMixin
+from jsalchemy_authorization.models import UserMixin
 
 
 class AuthenticationManager:
