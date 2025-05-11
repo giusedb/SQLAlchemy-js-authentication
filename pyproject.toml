@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Giuseppe Di Bona <giusedb@gmail.com>"]
 readme = "README.md"
-packages = [{include = "sqlalchemy_js_authentication"}]
+packages = [{include = "jsalchemy_authentication"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
