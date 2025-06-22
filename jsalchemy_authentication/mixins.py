@@ -8,10 +8,15 @@ class IdentityMixin:
     unid: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String, nullable=False)
 
+    def __init__(self, *args, **kwargs):
+        password = kwargs.pop('password')
+        super().__init__(**kwargs)
+        self.set_password(password)
+
     def set_password(self, password: str) -> None:
         """Encrypt and store the password."""
         salt = bcrypt.gensalt(5)
-        self.password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        self.password = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
     def check_password(self, password: str) -> bool:
         """verify the password against the stored password."""

@@ -13,6 +13,7 @@ class AuthenticationManager:
         self.user_model = user_model
         self.session_maker = session_maker
         self.salt = salt.encode('ascii')
+        self.field_set = {f.key for f in user_model.__mapper__.attrs}
 
     async def login(self, username, password) -> dict | None:
         query = (select(self.user_model)
@@ -26,12 +27,14 @@ class AuthenticationManager:
                 return None
             return user
 
-    async def register(self, user: UserMixin) -> UserMixin:
+    async def register(self, user: dict) -> UserMixin:
         async with self.session_maker() as session:
+            db_user = {k: v for k, v in user.items() if k in self.field_set}
             user.password = str(bcrypt.hashpw(user.password.encode('utf-8'), self.salt), encoding='ascii')
-            session.add(user)
+            user_obj = self.user_model(**db_user)
+            session.add(user_obj)
             await session.commit()
-            return user
+            return user_obj
 
     async def user_exists(self, username: str) -> bool:
         query = (select(self.user_model).where(self.user_model.username == username))
