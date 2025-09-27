@@ -46,3 +46,14 @@ class IdentityMixin:
             sync_session.user = dct
             return identity
         return None
+
+    @classmethod
+    async def async_login(cls, unid: str, password: str) -> "IdentityMixin":
+        identity = (await db.execute(select(cls).where(cls.unid == unid))).scalar_one_or_none()
+        if identity and identity.check_password(password):
+            dct = identity.__dict__.copy()
+            dct.pop('_sa_instance_state', None)
+            session.user = dct
+            return identity
+        return None
+

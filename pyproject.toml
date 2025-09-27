@@ -19,3 +19,8 @@ pylint = "^3.3.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+
+[tool.poetry.group.local.dependencies]
+sqlalchemy-js-web-context = { path = "../../libs/context", develop = true }
