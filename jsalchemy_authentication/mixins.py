@@ -13,9 +13,10 @@ class IdentityMixin:
     password: Mapped[str] = mapped_column(String, nullable=False)
 
     def __init__(self, *args, **kwargs):
-        password = kwargs.pop('password')
+        password = kwargs.pop('password', None)
         super().__init__(**kwargs)
-        self.set_password(password)
+        if password:
+            self.set_password(password)
 
     def set_password(self, password: str) -> None:
         """Encrypt and store the password."""
@@ -24,7 +25,7 @@ class IdentityMixin:
 
     def check_password(self, password: str) -> bool:
         """verify the password against the stored password."""
-        return bcrypt.checkpw(password.encode('utf-8'), self.password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def __repr__(self):
         return f"Identity({self.unid})"
@@ -33,9 +34,15 @@ class IdentityMixin:
         return self.unid
 
     @classmethod
-    def login(cls, session: Session, unid: str, password: str) -> "IdentityMixin":
+    def login(cls, unid: str, password: str) -> "IdentityMixin":
         """Find the user with the given unid and verify their password."""
-        identity = session.query(cls).filter_by(unid=unid).first()
+        identity = (
+            sync_db.execute(
+                select(cls)
+                .where(cls.unid == unid)).scalar_one_or_none())
         if identity and identity.check_password(password):
+            dct = identity.__dict__.copy()
+            dct.pop('_sa_instance_state', None)
+            sync_session.user = dct
             return identity
         return None
