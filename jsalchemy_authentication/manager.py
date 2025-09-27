@@ -1,10 +1,9 @@
-import time
 from types import FunctionType
 
 import bcrypt
-from sqlalchemy import false, select
+from sqlalchemy import select
 
-from jsalchemy_authorization.models import UserMixin
+from src.jsalchemy_auth.models import UserMixin
 
 
 class AuthenticationManager:

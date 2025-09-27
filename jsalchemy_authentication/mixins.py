@@ -1,6 +1,10 @@
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, select
 from sqlalchemy.orm import Mapped, mapped_column, Session
 import bcrypt
+
+from jsalchemy_web_context.sync import session as sync_session, db as sync_db
+from jsalchemy_web_context.sync import session, db
+
 
 class IdentityMixin:
     """Define the basic Identification information model."""

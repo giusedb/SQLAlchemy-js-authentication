@@ -2,12 +2,12 @@
 # pylint: disable=missing-class-docstring
 # pylint: disable=too-few-public-methods
 
-
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, select
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.util import hybridproperty
 
 from jsalchemy_authentication.mixins import IdentityMixin
+from jsalchemy_web_context.sync import db, session
 
 
 def test_extention(Base, session):
