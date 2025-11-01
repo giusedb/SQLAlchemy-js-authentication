@@ -10,6 +10,9 @@ packages = [{include = "jsalchemy_authentication"}]
 python = "^3.11"
 sqlalchemy = "^2.0.36"
 bcrypt = "^4.2.1"
+sqlalchemy-js-web-context = "^0.1"
+redis = "^6.4.0"
+fakeredis = "^2.31.3"
 
 
 [tool.poetry.group.dev.dependencies]
