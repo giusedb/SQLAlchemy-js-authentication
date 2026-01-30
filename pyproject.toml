@@ -1,29 +1,45 @@
-[tool.poetry]
+[project]
 name = "sqlalchemy-js-authentication"
 version = "0.1.0"
 description = ""
-authors = ["Giuseppe Di Bona <giusedb@gmail.com>"]
+authors = [{ name = "Giuseppe Di Bona", email = "giusedb@gmail.com" }]
+requires-python = ">=3.11,<4"
 readme = "README.md"
-packages = [{include = "jsalchemy_authentication"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "sqlalchemy>=2.0.36,<3",
+    "bcrypt>=4.2.1,<5",
+    "sqlalchemy-js-web-context>=0.1,<0.2",
+    "redis>=6.4.0,<7",
+    "fakeredis>=2.31.3,<3",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-sqlalchemy = "^2.0.36"
-bcrypt = "^4.2.1"
-sqlalchemy-js-web-context = "^0.1"
-redis = "^6.4.0"
-fakeredis = "^2.31.3"
+[dependency-groups]
+dev = [
+    "pytest>=8.3.3,<9",
+    "pylint>=3.3.1,<4",
+]
+local = ["sqlalchemy-js-web-context"]
 
+[tool.uv]
+default-groups = [
+    "dev",
+    "local",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.3"
-pylint = "^3.3.1"
+[tool.uv.sources]
+sqlalchemy-js-web-context = { path = "../../libs/jsa-context", editable = true }
+
+[tool.uv.build-backend]
+module-name = ["jsalchemy_authentication"]
+module-root = ""
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-
-
-[tool.poetry.group.local.dependencies]
-sqlalchemy-js-web-context = { path = "../../libs/context", develop = true }
+requires = ["uv_build>=0.9.17,<0.10.0"]
+build-backend = "uv_build"
